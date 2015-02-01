@@ -16,8 +16,8 @@ Usage
 * threshold: Filtering strength. The higher, the more filtered the clip will be. Hard thresholding can use a higher threshold than Soft thresholding before the clip looks overfiltered.
 
 * method: The filtering method the filter will use.
-  * 0: Hard Thresholding. All values under the threshold will be zeroed.
-  * 1: Soft Thresholding. All values under the threshold will be zeroed. All values above will be reduced by the threshold.
+  * 0: Hard thresholding. All values under the threshold will be zeroed.
+  * 1: Soft thresholding. All values under the threshold will be zeroed. All values above will be reduced by the threshold.
   * 2: Qian's (garrote) thresholding. Scales or nullifies coefficients - intermediary between (more) soft and (less) hard thresholding.
 
 * nsteps: Number of times, the wavelet will decompose the picture. Picture can't be decomposed beyond a particular point (typically, 8 for a 640x480 frame - as 2^9 = 512 > 480)
