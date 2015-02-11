@@ -1,5 +1,5 @@
 #----------------------------------------------------------------------------
-#  Makefile for VapourSynth-VagueDenoiser, modified based on d2vsource/GNUmakefile
+#  Makefile for VapourSynth-VagueDenoiser
 #----------------------------------------------------------------------------
 
 include config.mak
