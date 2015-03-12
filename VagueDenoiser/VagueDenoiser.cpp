@@ -28,12 +28,10 @@
 */
 
 #include <algorithm>
-#include <vector>
 #include <vapoursynth/VapourSynth.h>
 #include <vapoursynth/VSHelper.h>
 
 #define NPAD 10
-#define OFFSET 6 //better alignment? 10+6=16 -> cacheline
 
 struct VagueDenoiserData {
     VSNodeRef * node;
@@ -289,8 +287,8 @@ static void filterBlock(const VSFrameRef * src, VSFrameRef * dst, float * block,
                 int lowSize = (hLowSize0 + 1) >> 1;
                 float * inputp = block;
                 for (int j = 0; j < vLowSize0; j++) {
-                    copy(inputp, tempIn + NPAD + OFFSET, hLowSize0);
-                    transformStep(tempIn + OFFSET, tempOut, hLowSize0, lowSize, d);
+                    copy(inputp, tempIn + NPAD, hLowSize0);
+                    transformStep(tempIn, tempOut, hLowSize0, lowSize, d);
                     copy(tempOut + NPAD, inputp, hLowSize0);
                     inputp += stride;
                 }
@@ -298,8 +296,8 @@ static void filterBlock(const VSFrameRef * src, VSFrameRef * dst, float * block,
                 lowSize = (vLowSize0 + 1) >> 1;
                 inputp = block;
                 for (int j = 0; j < hLowSize0; j++) {
-                    copy(inputp, stride, tempIn + NPAD + OFFSET, vLowSize0);
-                    transformStep(tempIn + OFFSET, tempOut, vLowSize0, lowSize, d);
+                    copy(inputp, stride, tempIn + NPAD, vLowSize0);
+                    transformStep(tempIn, tempOut, vLowSize0, lowSize, d);
                     copy(tempOut + NPAD, inputp, stride, vLowSize0);
                     inputp++;
                 }
@@ -324,17 +322,18 @@ static void filterBlock(const VSFrameRef * src, VSFrameRef * dst, float * block,
             while (nstepsInvert--) {
                 const int idx = vLowSize[nstepsInvert] + vHighSize[nstepsInvert];
                 const int idx2 = hLowSize[nstepsInvert] + hHighSize[nstepsInvert];
+                float * idx3 = block;
                 for (int i = 0; i < idx2; i++) {
-                    float * idx3 = block + i;
                     copy(idx3, stride, tempIn + NPAD, idx);
                     invertStep(tempIn, tempOut, temp2, idx, d);
                     copy(tempOut + NPAD, idx3, stride, idx);
+                    idx3++;
                 }
 
-                float * idx3 = block;
+                idx3 = block;
                 for (int i = 0; i < idx; i++) {
-                    copy(idx3, tempIn + NPAD + OFFSET, idx2);
-                    invertStep(tempIn + OFFSET, tempOut, temp2, idx2, d);
+                    copy(idx3, tempIn + NPAD, idx2);
+                    invertStep(tempIn, tempOut, temp2, idx2, d);
                     copy(tempOut + NPAD, idx3, idx2);
                     idx3 += stride;
                 }
