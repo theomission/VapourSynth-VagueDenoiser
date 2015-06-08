@@ -351,7 +351,8 @@ static const VSFrameRef *VS_CC vaguedenoiserGetFrame(int n, int activationReason
             const VSFrameRef * fr[] = { d->process[0] ? nullptr : src, d->process[1] ? nullptr : src, d->process[2] ? nullptr : src };
             const int pl[] = { 0, 1, 2 };
             dst = vsapi->newVideoFrame2(d->vi->format, d->vi->width, d->vi->height, fr, pl, src, core);
-            block = vs_aligned_malloc<float>((vsapi->getStride(src, 0) / d->vi->format->bytesPerSample * d->vi->height) * sizeof(float), 32);
+
+            block = vs_aligned_malloc<float>(vsapi->getStride(src, 0) / d->vi->format->bytesPerSample * d->vi->height * sizeof(float), 32);
             if (!block) {
                 vsapi->setFilterError("VagueDenoiser: malloc failure (block)", frameCtx);
                 vsapi->freeFrame(src);
