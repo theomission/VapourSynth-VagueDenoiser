@@ -442,7 +442,7 @@ static void VS_CC vaguedenoiserCreate(const VSMap *in, VSMap *out, void *userDat
         return;
     }
     if (d.percent < 0.f || d.percent > 100.f) {
-        vsapi->setError(out, "VagueDenoiser: percent must be between 0.0 and 100.0 inclusive");
+        vsapi->setError(out, "VagueDenoiser: percent must be between 0.0 and 100.0 (inclusive)");
         return;
     }
 
